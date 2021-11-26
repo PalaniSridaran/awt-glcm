@@ -1,0 +1,18 @@
+table,th,td
+{
+    border:1px solid;
+    font-weight: normal;
+}
+
+table{
+    margin-top: 20px;
+    display: inline;
+    float: left;
+    margin-left: 15px;
+}
+
+th,td{
+    height: 30px;
+    width:30px;
+    text-align: center;
+}

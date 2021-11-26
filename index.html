@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>GLCM</title>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/Navigation-Clean.css">
+    <link rel="stylesheet" href="assets/css/Navigation-with-Search.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+
+        var out = [[0,0,0,0,0,0,0,0],
+                   [0,0,0,0,0,0,0,0],
+                   [0,0,0,0,0,0,0,0],
+                   [0,0,0,0,0,0,0,0],
+                   [0,0,0,0,0,0,0,0],
+                   [0,0,0,0,0,0,0,0],
+                   [0,0,0,0,0,0,0,0],
+                   [0,0,0,0,0,0,0,0]
+                ];
+
+        var inp = [
+                      [4,4,3,4,7,8],
+                      [4,4,6,8,3,5],
+                      [7,6,6,3,5,2],
+                      [7,6,2,5,6,2],
+                      [2,7,1,2,8,3] ];
+
+
+        function reset(){
+            out = [[0,0,0,0,0,0,0,0],
+                   [0,0,0,0,0,0,0,0],
+                   [0,0,0,0,0,0,0,0],
+                   [0,0,0,0,0,0,0,0],
+                   [0,0,0,0,0,0,0,0],
+                   [0,0,0,0,0,0,0,0],
+                   [0,0,0,0,0,0,0,0],
+                   [0,0,0,0,0,0,0,0]
+                ];
+        }
+
+        function clickButton() {
+            var distance = $(".tab-pane.active").attr("name");
+            var degree = $("input[name='btnradio']:checked").attr("id");    
+            output(distance, degree);
+        }        
+
+        function output(di, de) {
+            var d = parseInt(di);
+
+
+            switch (de) {
+                case "0": {
+                    for(var i=0;i<5;i++){
+                        for(var j=0;j<6-d;j++)
+                        {
+                            var m = inp[i][j]-1;
+                            var n = inp[i][j+d]-1;
+                            out[m][n]++;
+                        }
+                    }
+                    break;
+                }
+                case "45": {
+                    for(var i=d;i<5;i++){
+                        for(var j=0;j<6-d;j++)
+                        {
+                            var m = inp[i][j]-1;
+                            var n = inp[i-d][j+d]-1;
+                            out[m][n]++;
+                        }
+                    }
+                    break;
+                }
+                case "90": {
+                    for(var i=d;i<5;i++){
+                        for(var j=0;j<6;j++)
+                        {
+                            var m = inp[i][j]-1;
+                            var n = inp[i-d][j]-1;
+                            out[m][n]++;
+                        }
+                    }
+                    break;
+                }
+                case "135": {
+                    for(var i=d;i<5;i++){
+                        for(var j=d;j<6;j++)
+                        {
+                            var m = inp[i][j]-1;
+                            var n = inp[i-d][j-d]-1;
+                            out[m][n]++;
+                        }
+                    }
+                    break;
+                }
+                default: break;
+
+            } 
+
+
+
+            setOut();               
+
+        }
+
+        function setOut(){
+            for(var i=0;i<8;i++){
+                for(var j=0;j<8;j++)
+                {
+                    $("#"+i+"--"+j).text(out[i][j]);
+                }
+            }
+
+            reset(); 
+        }
+
+        function resetToEmpty(){
+            for(var i=0;i<8;i++){
+                for(var j=0;j<8;j++)
+                {
+                    $("#"+i+"--"+j).text("");
+                }
+            }
+        }
+
+    </script>
+</head>
+
+<body>
+    <section></section>
+    <h1 style="margin: 10px;">GLCM</h1>
+    <form style="height: 150px;">
+        <div>
+            <ul class="nav nav-tabs" role="tablist" style="margin-bottom: 30px;">
+                <li class="nav-item" role="presentation"><a class="nav-link active" role="tab" data-bs-toggle="tab"
+                        href="#tab-1">D=1</a></li>
+                <li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="tab"
+                        href="#tab-2">D=2</a></li>
+                <li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="tab"
+                        href="#tab-3">D=3</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" role="tabpanel" id="tab-1" name="1"></div>
+                <div class="tab-pane" role="tabpanel" id="tab-2" name="2"></div>
+                <div class="tab-pane" role="tabpanel" id="tab-3" name="3"></div>
+            </div>
+        </div>
+        <ul class="list-group"></ul>
+        <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
+            <label id="0" class="form-label btn btn-outline-primary" style="margin-left: 10px;">
+                <input type="radio" id="0" name="btnradio">&nbsp;Degree = 0&nbsp;</label>
+
+            <label id="45" class="form-label btn btn-outline-primary" style="margin-left: 10px;">
+                <input type="radio" id="45" name="btnradio">&nbsp;Degree = 45</label>
+
+            <label id="90" class="form-label btn btn-outline-primary" style="margin-left: 10px;">
+                <input type="radio" id="90" name="btnradio">&nbsp;Degree = 90&nbsp;</label>
+
+            <label id="135" class="form-label btn btn-outline-primary" style="margin-left: 10px;">
+                <input type="radio" id="135" name="btnradio">&nbsp;Degree = 135&nbsp;</label>
+            </div>
+    </form>
+    <div style="margin-left:10px;">
+        <button class="btn btn-primary" onclick="clickButton()">Generate</button>
+    <button class="btn btn-primary" onclick="resetToEmpty()">Reset</button>
+</div>
+
+    <table id="i" style="margin-top: 20px;">
+        <tr>
+            <th></th>
+            <th>1</th>
+            <th>2</th>
+            <th>3</th>
+            <th>4</th>
+            <th>5</th>
+            <th>6</th>
+        </tr>
+        <tr>
+            <th>1</th>
+            <td id="0-0">4</td>
+            <td id="0-1">4</td>
+            <td id="0-2">3</td>
+            <td id="0-3">4</td>
+            <td id="0-4">7</td>
+            <td id="0-5">8</td>
+        </tr>
+        <tr>
+            <th>2</th>
+            <td id="1-0">4</td>
+            <td id="1-1">4</td>
+            <td id="1-2">6</td>
+            <td id="1-3">8</td>
+            <td id="1-4">3</td>
+            <td id="1-5">5</td>
+        </tr>
+        <tr>
+            <th>3</th>
+            <td id="2-0">7</td>
+            <td id="2-1">6</td>
+            <td id="2-2">6</td>
+            <td id="2-3">3</td>
+            <td id="2-4">5</td>
+            <td id="2-5">2</td>
+        </tr>
+        <tr>
+            <th>4</th>
+            <td id="3-0">7</td>
+            <td id="3-1">6</td>
+            <td id="3-2">2</td>
+            <td id="3-3">5</td>
+            <td id="3-4">6</td>
+            <td id="3-5">2</td>
+        </tr>
+        <tr>
+            <th>5</th>
+            <td id="4-0">2</td>
+            <td id="4-1">7</td>
+            <td id="4-2">1</td>
+            <td id="4-3">2</td>
+            <td id="4-4">8</td>
+            <td id="4-5">3</td>
+        </tr>
+    </table>
+    <table id="o" style="margin-top: 20px;">
+        <tr>
+            <th></th>
+            <th>1</th>
+            <th>2</th>
+            <th>3</th>
+            <th>4</th>
+            <th>5</th>
+            <th>6</th>
+            <th>7</th>
+            <th>8</th>
+        </tr>
+        <tr>
+            <th>1</th>
+            <td id="0--0"></td>
+            <td id="0--1"></td>
+            <td id="0--2"></td>
+            <td id="0--3"></td>
+            <td id="0--4"></td>
+            <td id="0--5"></td>
+            <td id="0--6"></td>
+            <td id="0--7"></td>
+        </tr>
+        <tr>
+            <th>2</th>
+            <td id="1--0"></td>
+            <td id="1--1"></td>
+            <td id="1--2"></td>
+            <td id="1--3"></td>
+            <td id="1--4"></td>
+            <td id="1--5"></td>
+            <td id="1--6"></td>
+            <td id="1--7"></td>
+        </tr>
+        <tr>
+            <th>3</th>
+            <td id="2--0"></td>
+            <td id="2--1"></td>
+            <td id="2--2"></td>
+            <td id="2--3"></td>
+            <td id="2--4"></td>
+            <td id="2--5"></td>
+            <td id="2--6"></td>
+            <td id="2--7"></td>
+        </tr>
+        <tr>
+            <th>4</th>
+            <td id="3--0"></td>
+            <td id="3--1"></td>
+            <td id="3--2"></td>
+            <td id="3--3"></td>
+            <td id="3--4"></td>
+            <td id="3--5"></td>
+            <td id="3--6"></td>
+            <td id="3--7"></td>
+        </tr>
+        <tr>
+            <th>5</th>
+            <td id="4--0"></td>
+            <td id="4--1"></td>
+            <td id="4--2"></td>
+            <td id="4--3"></td>
+            <td id="4--4"></td>
+            <td id="4--5"></td>
+            <td id="4--6"></td>
+            <td id="4--7"></td>
+        </tr>
+        <tr>
+            <th>6</th>
+            <td id="5--0"></td>
+            <td id="5--1"></td>
+            <td id="5--2"></td>
+            <td id="5--3"></td>
+            <td id="5--4"></td>
+            <td id="5--5"></td>
+            <td id="5--6"></td>
+            <td id="5--7"></td>
+        </tr>
+        <tr>
+            <th>7</th>
+            <td id="6--0"></td>
+            <td id="6--1"></td>
+            <td id="6--2"></td>
+            <td id="6--3"></td>
+            <td id="6--4"></td>
+            <td id="6--5"></td>
+            <td id="6--6"></td>
+            <td id="6--7"></td>
+        </tr>
+        <tr>
+            <th>8</th>
+            <td id="7--0"></td>
+            <td id="7--1"></td>
+            <td id="7--2"></td>
+            <td id="7--3"></td>
+            <td id="7--4"></td>
+            <td id="7--5"></td>
+            <td id="7--6"></td>
+            <td id="7--7"></td>
+        </tr>
+    </table>
+
+    
+
+</body>
+
+</html>
